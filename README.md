@@ -1,8 +1,8 @@
 # hackathon21
+
 Team name: Trading Xbox for PS5
 
 Link to event: https://tech.eu/event/start-hack-2021-online/
-
 
 ## Prerequisites
 
@@ -22,6 +22,7 @@ yarn install
 ```
 
 ## Run
+
 ```bash
 conda activate hackathon21
 python backend/server.py
@@ -30,7 +31,11 @@ cd frontend
 yarn start
 ```
 
-
 # Tasks
+
 - [ ] Collect sample diagnostics sheets (1-2 for different languages, maybe?)
 - [ ] OCR text form diagnostics page
+
+# Resources used
+
+- https://www.flaticon.com/free-icon/take-a-picture_3460771

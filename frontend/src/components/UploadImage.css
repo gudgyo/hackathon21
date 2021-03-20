@@ -1,0 +1,17 @@
+.UploadImage .input {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.UploadImage .img {
+    display: block;
+    width: calc(min(75vw, 400px));
+    margin-left: auto;
+    margin-right: auto;
+    filter: opacity(40%);
+    margin-top: 4em;
+    margin-bottom: 1em;
+    background-color: lightgray;
+}

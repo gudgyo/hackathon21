@@ -17,17 +17,26 @@ export default class App extends React.Component<Props, State> {
     onResults = (results: {}) => this.setState({ step: 1, results });
 
     render = () => (
-        <div>
-            {(() => {
-                switch (this.state.step) {
-                    case 0:
-                        return <UploadImage onResults={this.onResults} />;
-                    case 1:
-                        if (this.state.results) {
-                            return <Results results={this.state.results} />;
+        <div className="container">
+            <div className="row">
+                <div className="column">
+                    {/* <nav className="navbar"></nav> */}
+                    {(() => {
+                        switch (this.state.step) {
+                            case 0:
+                                return (
+                                    <UploadImage onResults={this.onResults} />
+                                );
+                            case 1:
+                                if (this.state.results) {
+                                    return (
+                                        <Results results={this.state.results} />
+                                    );
+                                }
                         }
-                }
-            })()}
+                    })()}
+                </div>
+            </div>
         </div>
     );
 }
