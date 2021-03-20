@@ -8,6 +8,8 @@ interface Props {
 export default class UploadImage extends React.Component<Props> {
     private input: HTMLInputElement | null = null;
 
+    text: HTMLInputElement | null = null;
+
     onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files?.length) {
             const data = new FormData();
@@ -26,6 +28,26 @@ export default class UploadImage extends React.Component<Props> {
         }
     };
 
+    onSubmit = async (e: React.FormEvent | React.MouseEvent) => {
+        e.preventDefault();
+
+        if (this.text?.value) {
+            const data = new FormData();
+            data.append("text", this.text.value);
+
+            const results = await (
+                await fetch("api/enter-icd", {
+                    method: "POST",
+                    body: data,
+                })
+            ).json();
+
+            this.text.value = "";
+
+            this.props.onResults(results);
+        }
+    };
+
     render = () => (
         <div className="UploadImage container">
             <div className="panel panel-default">
@@ -35,7 +57,7 @@ export default class UploadImage extends React.Component<Props> {
                 <div className="panel-body">
                     <div className="container">
                         <h3 className="panel-title">💡 Info</h3>
-                        <div>
+                        <p>
                             Take a photo of your diagnosis. Make sure it
                             contains a so-called ICD-10 code (which looks like a
                             singe letter, then 2-6 numbers) (
@@ -46,7 +68,21 @@ export default class UploadImage extends React.Component<Props> {
                                 link
                             </a>
                             ).
-                        </div>
+                        </p>
+
+                        <form onSubmit={this.onSubmit}>
+                            <label
+                                htmlFor="text"
+                                style={{ fontWeight: "normal" }}
+                            >
+                                Or enter ICD-10 code manually:&nbsp;&nbsp;
+                            </label>
+                            <input
+                                name="text"
+                                ref={(e) => (this.text = e)}
+                            ></input>
+                            <button type="submit">➡️</button>
+                        </form>
 
                         <img
                             className="img"

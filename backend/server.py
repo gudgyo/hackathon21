@@ -22,6 +22,12 @@ def upload_image():
     return show_results(icd)
 
 
+@app.route("/api/enter-icd", methods=["POST"])
+def enter_icd():
+    icd = flask.request.values["text"]
+    return show_results(icd)
+
+
 def get_icd_from_text(text: str) -> str:
     return (
         re.search(r"[A-Z]\d\d\.?\d{0,4}", text.replace("O", "0"))
