@@ -44,4 +44,4 @@ def return_data(icd):
         "symptoms": " ".join(row['symptoms'].to_string().split(" ", 1)[1].split()),
         "treatment": " ".join(row['treatment'].to_string().split(" ", 1)[1].split()),
     }
-    return json.dumps(data)
+    return data

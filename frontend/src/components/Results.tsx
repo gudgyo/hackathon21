@@ -2,7 +2,7 @@ import * as React from "react";
 import "./Results.css";
 
 interface Props {
-    results: {};
+    results: any;
 }
 
 export default ({ results }: Props) => (
@@ -13,8 +13,9 @@ export default ({ results }: Props) => (
             </div>
             <div className="panel-body">
                 <div className="container">
+                <img src={`icd_images/${results?.disease_icon}.png`} />
                     <p>Results are:</p>
-                    <p>{results}</p>
+                    <p>{JSON.stringify(results)}</p>
                 </div>
             </div>
         </div>
