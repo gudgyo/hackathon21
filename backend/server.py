@@ -23,7 +23,11 @@ def upload_image():
 
 
 def get_icd_from_text(text: str) -> str:
-    return re.match(r"[A-Z]\d\d\.?\d?\d?", text).group(0).replace(".", "")
+    return (
+        re.search(r"[A-Z]\d\d\.?\d{0,4}", text.replace("O", "0"))
+        .group(0)
+        .replace(".", "")
+    )
 
 
 def show_results(icd: str) -> str:
