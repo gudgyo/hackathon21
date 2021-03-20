@@ -31,7 +31,7 @@ def return_data(icd):
 
     data = {
         "disease_icon": disease_icon,
-        "iconlist": list(set(match_icon(icd))),
+        "iconlist": match_icon(row['definition'].values[0]),
         "definition": " ".join(row['definition'].to_string().split(" ", 1)[1].split()),
         "causes": " ".join(row['causes'].to_string().split(" ", 1)[1].split()),
         "disease": " ".join(row['disease'].to_string().split(" ", 1)[1].split()),

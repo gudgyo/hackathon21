@@ -6,6 +6,8 @@ from PIL import Image
 
 from ocr import ocr
 
+from give_data import return_data
+
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
@@ -37,7 +39,7 @@ def get_icd_from_text(text: str) -> str:
 
 
 def show_results(icd: str) -> str:
-    return json.dumps([])
+    return json.dumps(return_data(icd))
 
 
 @app.route("/api/test-results")

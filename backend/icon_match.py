@@ -18,7 +18,7 @@ def match_icon(text):
         "arterie": ["arterie"],
         "muscle": ["muscle"],
         "virus": ["virus", "viral"],
-        "bacteria": ["bacteria"],
+        "bacteria": ["bacteria", "bacterium"],
         "lungs": ["lungs", "asphyxia", "dyspnea"],
         "bone": ["bone"],
         "cough": ["cough"],
@@ -29,8 +29,7 @@ def match_icon(text):
     doc = nlp(text)
     for token in doc:
         for key in icons.keys():
-            if token.lemma_ in icons[key] and token.lemma_:
+            if token.lemma_ in [i.lemma_ for i in nlp(" ".join(icons[key]))]:
                 results.append(key)
+    results = list(set(results))
     return results
-
-# print(match_icon("Anthrax is an infection caused by the bacterium Bacillus anthracis.[2] It can occur in four forms: skin, lungs, intestinal, and injection.[9] Symptom onset occurs between one day to over two months after the infection is contracted.[1] The skin form presents with a small blister with surrounding swelling that often turns into a painless ulcer with a black center.[1] The inhalation form presents with fever, chest pain, and shortness of breath.[1] The intestinal form presents with diarrhea which may contain blood, abdominal pains, nausea, and vomiting.[1] The injection form presents with fever and an abscess at the site of drug injection."))
