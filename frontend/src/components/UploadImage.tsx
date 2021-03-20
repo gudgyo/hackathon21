@@ -38,7 +38,7 @@ export default class UploadImage extends React.Component<Props> {
                         <div>
                             Take a photo of your diagnosis. Make sure it
                             contains a so-called ICD-10 code (which looks like a
-                            singe letter, then 2-5 numbers) (
+                            singe letter, then 2-6 numbers) (
                             <a
                                 href="https://www.verywellhealth.com/finding-icd-codes-2615311"
                                 target="_blank"
