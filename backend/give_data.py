@@ -29,6 +29,10 @@ def return_data(icd):
     else:
         disease_icon = ""
 
+    if ("hereditary" or "inheritable") in row['definition'].values[0]:
+        inherit = True
+    else:
+        inherit = False
 
     data = {
         "disease_icon": disease_icon,
@@ -44,5 +48,7 @@ def return_data(icd):
         "risks": row['risks'].values[0],
         "symptoms": row['symptoms'].values[0],
         "treatment": row['treatment'].values[0],
+        "infectious": True if disease_icon=="infection" else None,
+        "hereditary": inherit,
     }
     return data
