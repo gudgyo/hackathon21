@@ -4,9 +4,9 @@ import re
 import flask
 from PIL import Image
 
-from ocr import ocr
-
 from give_data import return_data
+from microsoft_ocr import recognize_text
+from pil2datauri import pil2datauri
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -16,12 +16,17 @@ app.config["DEBUG"] = True
 def upload_image():
     file_content = flask.request.files["image"]
     image = Image.open(file_content)
-    text = ocr(image)
+    image_2 = image.copy()
+    text, data = recognize_text(image)
     print(text)
 
     icd = get_icd_from_text(text)
 
     return show_results(icd)
+
+    data_uri = pil2datauri(image_2)
+
+    return json.dumps(dict(text=text, data=data, data_uri=data_uri, guess=0))
 
 
 @app.route("/api/enter-icd", methods=["POST"])

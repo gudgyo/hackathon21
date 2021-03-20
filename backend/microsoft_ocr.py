@@ -51,6 +51,8 @@ def recognize_text(img: Image):
             text += "\n"
     print(text)
 
+    return text, data
+
 
 if __name__ == "__main__":
     img = Image.open("../data/sample-inputs/sample.png")

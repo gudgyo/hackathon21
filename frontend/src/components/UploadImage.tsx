@@ -3,6 +3,7 @@ import "./UploadImage.css";
 
 interface Props {
     onResults: (results: {}) => void;
+    onOcrResults: (results: {}) => void;
 }
 
 class State {
@@ -34,7 +35,7 @@ export default class UploadImage extends React.Component<Props, State> {
 
             e.target.value = "";
 
-            this.props.onResults(results);
+            this.props.onOcrResults(results);
         }
     };
 
@@ -66,7 +67,7 @@ export default class UploadImage extends React.Component<Props, State> {
         <div className="UploadImage container">
             <div className="panel panel-default">
                 <div className="panel-heading">
-                    <h3 className="panel-title">Upload Image</h3>
+                    <h3 className="panel-title">📄 Upload Image</h3>
                 </div>
                 <div className="panel-body">
                     {!this.state.loading ? (
