@@ -1,15 +1,25 @@
 import React from "react";
 import "./App.css";
 import { ShowApi } from "./ShowApi";
+import UploadImage from "./components/UploadImage";
 
-function App() {
-    return (
-        <div className="App">
-            <header className="App-header">
-                <ShowApi />
-            </header>
+interface Props {}
+
+class State {
+    step: number = 0;
+}
+
+export default class App extends React.Component<Props, State> {
+    state = new State();
+
+    render = () => (
+        <div>
+            {(() => {
+                switch (this.state.step) {
+                    case 0:
+                        return <UploadImage />;
+                }
+            })()}
         </div>
     );
 }
-
-export default App;
