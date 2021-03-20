@@ -1,6 +1,7 @@
 import pandas as pd
 from icon_match import match_icon
 import json
+import re
 
 df = pd.read_pickle("backend/diseases2.pkl")
 
@@ -33,15 +34,15 @@ def return_data(icd):
         "disease_icon": disease_icon,
         "iconlist": match_icon(row['definition'].values[0]),
         "definition": row['definition'].values[0],
-        "causes": " ".join(row['causes'].to_string().split(" ", 1)[1].split()),
-        "disease": " ".join(row['disease'].to_string().split(" ", 1)[1].split()),
-        "duration": " ".join(row['duration'].to_string().split(" ", 1)[1].split()),
-        "frequency": " ".join(row['frequency'].to_string().split(" ", 1)[1].split()),
+        "causes": re.sub('[^A-Za-z0-9]+', '', row['causes'].values[0]),
+        "disease": row['disease'].values[0].lstrip(),
+        "duration": row['duration'].values[0],
+        "frequency": row['frequency'].values[0],
         "icd": icd,
-        "prevention": " ".join(row['prevention'].to_string().split(" ", 1)[1].split()),
-        "prognosis": " ".join(row['prognosis'].to_string().split(" ", 1)[1].split()),
-        "risks": " ".join(row['risks'].to_string().split(" ", 1)[1].split()),
-        "symptoms": " ".join(row['symptoms'].to_string().split(" ", 1)[1].split()),
-        "treatment": " ".join(row['treatment'].to_string().split(" ", 1)[1].split()),
+        "prevention": row['prevention'].values[0],
+        "prognosis": row['prognosis'].values[0],
+        "risks": re.sub('[^A-Za-z0-9]+', '', row['risks'].values[0]),
+        "symptoms": row['symptoms'].values[0],
+        "treatment": row['treatment'].values[0],
     }
     return data
