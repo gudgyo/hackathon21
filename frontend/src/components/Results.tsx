@@ -19,9 +19,18 @@ export default ({ results }: Props) => (
                     }}
                 ></div>
                 <ul className="list-group">
-                    {/* <div className="alert alert-danger" role="alert">
-                        <strong>Beware</strong> Infectious.
-                    </div> */}
+                    {results.infectious && (
+                        <div className="alert alert-danger" role="alert">
+                            <strong>😷 Warning.</strong> This disease is
+                            infectious.
+                        </div>
+                    )}
+                    {results.hereditary && (
+                        <div className="alert alert-danger" role="alert">
+                            <strong>👶 Warning.</strong> This disease is
+                            hereditary.
+                        </div>
+                    )}
                     <li className="list-group-item">
                         <div className="row">
                             <div className="col-xs-4 col-md-2">
