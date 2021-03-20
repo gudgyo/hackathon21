@@ -16,6 +16,7 @@ conda create -n hackathon21 python=3.8
 conda activate hackathon21
 pip install -r requirements.txt
 conda install -c conda-forge tesseract
+python -m spacy download en_core_web_sm
 
 cd frontend
 yarn install
