@@ -29,7 +29,7 @@ def return_data(icd):
     else:
         disease_icon = ""
 
-    if ("hereditary" or "inheritable") in row['definition'].values[0]:
+    if ("hereditary" or "inheritable" or "hereditable" or "heritable") in row['definition'].values[0]:
         inherit = True
     else:
         inherit = False
