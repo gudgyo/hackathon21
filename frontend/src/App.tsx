@@ -27,7 +27,7 @@ export default class App extends React.Component<Props, State> {
                                     href="#"
                                     style={{ color: "black" }}
                                 >
-                                    dia2pat
+                                    🗣 doc2pat
                                 </a>
                             </li>
                             <li role="presentation">
