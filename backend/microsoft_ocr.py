@@ -1,49 +1,57 @@
 # import models
 import os
-import time
+from io import BytesIO
+from pprint import pprint
 
-from azure.cognitiveservices.vision.computervision import ComputerVisionClient
-from azure.cognitiveservices.vision.computervision.models import OperationStatusCodes
+import requests
+from PIL import Image
 from dotenv import find_dotenv, load_dotenv
-from msrest.authentication import CognitiveServicesCredentials
 
-if __name__ == "__main__":
+
+# https://www.speeckaert.io/blog/articles/using-microsoft-cognitive-services-to-perform-ocr-on-images.html
+def recognize_text(img: Image):
     load_dotenv(find_dotenv())
 
     region = os.environ["ACCOUNT_REGION"]
     key = os.environ["ACCOUNT_KEY"]
 
-    credentials = CognitiveServicesCredentials(key)
-    client = ComputerVisionClient(
-        endpoint="https://" + region + ".api.cognitive.microsoft.com/",
-        credentials=credentials,
-    )
+    api_url = f"https://{region}.api.cognitive.microsoft.com/vision/v2.0/ocr"
 
-    url = "https://github.com/Azure-Samples/cognitive-services-python-sdk-samples/raw/master/samples/vision/images/make_things_happen.jpg"
-    raw = True
-    numberOfCharsInOperationId = 36
+    header = {
+        "Ocp-Apim-Subscription-Key": key,
+        "Content-Type": "application/octet-stream",
+    }
 
-    # SDK call
-    rawHttpResponse = client.read(url, language="en", raw=True)
+    params = {"language": "unk"}
 
-    # Get ID from returned headers
-    operationLocation = rawHttpResponse.headers["Operation-Location"]
-    idLocation = len(operationLocation) - numberOfCharsInOperationId
-    operationId = operationLocation[idLocation:]
+    # Ensure the image is at least 40x40
+    if min(img.size) < 40:
+        img = img.crop((0, 0, max(img.size[0], 40), max(img.size[1], 40)))
 
-    # SDK call
-    result = client.get_read_result(operationId)
+    bin_img = BytesIO()
+    img.save(bin_img, format="PNG")
+    img.close()
 
-    while result.status == OperationStatusCodes.running:
-        time.sleep(10)
-        result = client.get_read_result(operationId)
+    img_data = bin_img.getvalue()
+    bin_img.close()
 
-    # Get data
-    if result.status == OperationStatusCodes.succeeded:
+    r = requests.post(api_url, params=params, headers=header, data=img_data)
 
-        for line in result.analyze_result.read_results[0].lines:
-            print(line.text)
-            print(line.bounding_box)
+    r.raise_for_status()
 
-    else:
-        print(result)
+    data = r.json()
+
+    pprint(data)
+
+    text = ""
+    for item in r.json()["regions"]:
+        for line in item["lines"]:
+            for word in line["words"]:
+                text += " " + word["text"]
+            text += "\n"
+    print(text)
+
+
+if __name__ == "__main__":
+    img = Image.open("../data/sample-inputs/sample.png")
+    recognize_text(img)
