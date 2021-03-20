@@ -57,6 +57,7 @@ export default class App extends React.Component<Props, State> {
                                 return (
                                     <OcrResults
                                         ocrResults={this.state.ocrResults}
+                                        onResults={this.onResults}
                                     />
                                 );
                             case 2:
