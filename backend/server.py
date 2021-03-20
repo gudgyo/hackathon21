@@ -16,6 +16,11 @@ app.config["DEBUG"] = True
 def upload_image():
     file_content = flask.request.files["image"]
     image = Image.open(file_content)
+
+    print(image.width, image.height)
+
+    image = image.resize((int(image.height / 4), int(image.width / 4)))
+
     image_2 = image.copy()
     text, data = recognize_text(image)
 
