@@ -5,7 +5,13 @@ interface Props {
     onResults: (results: {}) => void;
 }
 
-export default class UploadImage extends React.Component<Props> {
+class State {
+    loading: boolean = false;
+}
+
+export default class UploadImage extends React.Component<Props, State> {
+    state = new State();
+
     private input: HTMLInputElement | null = null;
 
     text: HTMLInputElement | null = null;
@@ -14,6 +20,10 @@ export default class UploadImage extends React.Component<Props> {
         if (e.target.files?.length) {
             const data = new FormData();
             data.append("image", e.target.files[0]);
+
+            await new Promise((r) =>
+                this.setState({ loading: true }, () => r(undefined)),
+            );
 
             const results = await (
                 await fetch("api/upload-image", {
@@ -35,6 +45,10 @@ export default class UploadImage extends React.Component<Props> {
             const data = new FormData();
             data.append("text", this.text.value);
 
+            await new Promise((r) =>
+                this.setState({ loading: true }, () => r(undefined)),
+            );
+
             const results = await (
                 await fetch("api/enter-icd", {
                     method: "POST",
@@ -42,7 +56,7 @@ export default class UploadImage extends React.Component<Props> {
                 })
             ).json();
 
-            this.text.value = "";
+            this.text && (this.text.value = "");
 
             this.props.onResults(results);
         }
@@ -55,49 +69,53 @@ export default class UploadImage extends React.Component<Props> {
                     <h3 className="panel-title">Upload Image</h3>
                 </div>
                 <div className="panel-body">
-                    <div className="container">
-                        <h3 className="panel-title">💡 Info</h3>
-                        <p>
-                            Take a photo of your diagnosis. Make sure it
-                            contains a so-called ICD-10 code (which looks like a
-                            singe letter, then 2-6 numbers) (
-                            <a
-                                href="https://www.verywellhealth.com/finding-icd-codes-2615311"
-                                target="_blank"
-                            >
-                                link
-                            </a>
-                            ).
-                        </p>
+                    {!this.state.loading ? (
+                        <div className="container">
+                            <h3 className="panel-title">💡 Info</h3>
+                            <p>
+                                Take a photo of your diagnosis. Make sure it
+                                contains a so-called ICD-10 code (which looks
+                                like a singe letter, then 2-6 numbers) (
+                                <a
+                                    href="https://www.verywellhealth.com/finding-icd-codes-2615311"
+                                    target="_blank"
+                                >
+                                    link
+                                </a>
+                                ).
+                            </p>
 
-                        <form onSubmit={this.onSubmit}>
-                            <label
-                                htmlFor="text"
-                                style={{ fontWeight: "normal" }}
-                            >
-                                Or enter ICD-10 code manually:&nbsp;&nbsp;
-                            </label>
+                            <form onSubmit={this.onSubmit}>
+                                <label
+                                    htmlFor="text"
+                                    style={{ fontWeight: "normal" }}
+                                >
+                                    Or enter ICD-10 code manually:&nbsp;&nbsp;
+                                </label>
+                                <input
+                                    name="text"
+                                    ref={(e) => (this.text = e)}
+                                ></input>
+                                <button type="submit">➡️</button>
+                            </form>
+
+                            <img
+                                className="img"
+                                src="images/3460771.svg"
+                                onClick={() => this.input?.click()}
+                            />
                             <input
-                                name="text"
-                                ref={(e) => (this.text = e)}
+                                ref={(e) => (this.input = e)}
+                                className="input"
+                                type="file"
+                                accept="image/*"
+                                onChange={this.onChange}
+                                capture="camera"
                             ></input>
-                            <button type="submit">➡️</button>
-                        </form>
-
-                        <img
-                            className="img"
-                            src="images/3460771.svg"
-                            onClick={() => this.input?.click()}
-                        />
-                        <input
-                            ref={(e) => (this.input = e)}
-                            className="input"
-                            type="file"
-                            accept="image/*"
-                            onChange={this.onChange}
-                            capture="camera"
-                        ></input>
-                    </div>
+                        </div>
+                    ) : (
+                        <img className="spinner" src="images/load.gif" />
+                    )}
                 </div>
             </div>
         </div>
