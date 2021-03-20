@@ -1,6 +1,5 @@
 import React from "react";
 import "./App.css";
-import { ShowApi } from "./ShowApi";
 import UploadImage from "./components/UploadImage";
 import Results from "./components/Results";
 
@@ -17,10 +16,30 @@ export default class App extends React.Component<Props, State> {
     onResults = (results: {}) => this.setState({ step: 1, results });
 
     render = () => (
-        <div className="container">
+        <div className="App container">
             <div className="row">
                 <div className="column">
-                    {/* <nav className="navbar"></nav> */}
+                    <div className="container">
+                        <ul className="nav nav-pills">
+                            <li>
+                                <a
+                                    className="navbar-brand"
+                                    href="#"
+                                    style={{ color: "black" }}
+                                >
+                                    dia2pat
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a
+                                    href="#"
+                                    onClick={() => window.location.reload()}
+                                >
+                                    ↩️ Start over
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                     {(() => {
                         switch (this.state.step) {
                             case 0:
