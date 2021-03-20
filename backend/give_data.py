@@ -26,6 +26,8 @@ def return_data(icd):
         disease_icon = "circulation"
     elif icd[0] == "J":
         disease_icon = "lung"
+    elif icd[0] == "U":
+        disease_icon = "infection"
     else:
         disease_icon = ""
 
