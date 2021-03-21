@@ -31,8 +31,11 @@ def return_data(icd):
     else:
         disease_icon = ""
 
+    if icd == "E840":
+        disease_icon = "lung"
+
     inherit = False
-    for i in ["hereditary", "inheritable", "hereditable", "heritable"]:
+    for i in ["hereditary", "inheritable", "hereditable", "heritable", "inherited"]:
         if i in row['definition'].values[0]:
             inherit = True
 
