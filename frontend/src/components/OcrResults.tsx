@@ -4,6 +4,7 @@ import "./OcrResults.css";
 interface Props {
     ocrResults: any;
     onResults: (results: {}) => void;
+    onError: (message?: string) => void;
 }
 
 interface State {
@@ -51,12 +52,17 @@ export default class OcrResults extends React.Component<Props, State> {
             this.setState({ loading: true }, () => r(undefined)),
         );
 
-        const results = await (
-            await fetch("api/enter-icd", {
-                method: "POST",
-                body: data,
-            })
-        ).json();
+        const response = await fetch("api/enter-icd", {
+            method: "POST",
+            body: data,
+        });
+
+        if (!response.ok) {
+            this.props.onError(await response.text());
+            return;
+        }
+
+        const results = await response.json();
 
         this.props.onResults(results);
     };
@@ -74,7 +80,7 @@ export default class OcrResults extends React.Component<Props, State> {
                             <div className="row">
                                 <div className="container">
                                     <button
-                                        className="btn"
+                                        className="btn btn-primary"
                                         type="button"
                                         onClick={this.onSubmit}
                                         disabled={!this.state.selected.length}

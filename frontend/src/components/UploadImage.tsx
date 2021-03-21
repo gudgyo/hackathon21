@@ -4,6 +4,7 @@ import "./UploadImage.css";
 interface Props {
     onResults: (results: {}) => void;
     onOcrResults: (results: {}) => void;
+    onError: (message?: string) => void;
 }
 
 class State {
@@ -26,12 +27,16 @@ export default class UploadImage extends React.Component<Props, State> {
                 this.setState({ loading: true }, () => r(undefined)),
             );
 
-            const results = await (
-                await fetch("api/upload-image", {
-                    method: "POST",
-                    body: data,
-                })
-            ).json();
+            const response = await fetch("api/upload-image", {
+                method: "POST",
+                body: data,
+            });
+            if (!response.ok) {
+                this.props.onError(await response.text());
+                return;
+            }
+
+            const results = await response.json();
 
             e.target.value = "";
 
@@ -50,12 +55,17 @@ export default class UploadImage extends React.Component<Props, State> {
                 this.setState({ loading: true }, () => r(undefined)),
             );
 
-            const results = await (
-                await fetch("api/enter-icd", {
-                    method: "POST",
-                    body: data,
-                })
-            ).json();
+            const response = await fetch("api/enter-icd", {
+                method: "POST",
+                body: data,
+            });
+
+            if (!response.ok) {
+                this.props.onError(await response.text());
+                return;
+            }
+
+            const results = await response.json();
 
             this.text && (this.text.value = "");
 

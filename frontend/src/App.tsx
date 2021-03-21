@@ -3,6 +3,7 @@ import "./App.css";
 import UploadImage from "./components/UploadImage";
 import Results from "./components/Results";
 import OcrResults from "./components/OcrResults";
+import ErrorView from "./components/ErrorView";
 
 interface Props {}
 
@@ -10,6 +11,7 @@ class State {
     step: number = 0;
     results: {} | null = null;
     ocrResults: {} | null = null;
+    errorMessage: string | null = null;
 }
 
 export default class App extends React.Component<Props, State> {
@@ -18,6 +20,9 @@ export default class App extends React.Component<Props, State> {
     onResults = (results: {}) => this.setState({ step: 2, results });
 
     onOcrResults = (ocrResults: {}) => this.setState({ step: 1, ocrResults });
+
+    onError = (message?: string) =>
+        this.setState({ errorMessage: message ?? "Error", step: -1 });
 
     render = () => (
         <div className="App container">
@@ -51,6 +56,7 @@ export default class App extends React.Component<Props, State> {
                                     <UploadImage
                                         onResults={this.onResults}
                                         onOcrResults={this.onOcrResults}
+                                        onError={this.onError}
                                     />
                                 );
                             case 1:
@@ -58,6 +64,7 @@ export default class App extends React.Component<Props, State> {
                                     <OcrResults
                                         ocrResults={this.state.ocrResults}
                                         onResults={this.onResults}
+                                        onError={this.onError}
                                     />
                                 );
                             case 2:
@@ -66,6 +73,16 @@ export default class App extends React.Component<Props, State> {
                                         <Results results={this.state.results} />
                                     );
                                 }
+                                break;
+                            case -1:
+                                if (this.state.errorMessage) {
+                                    return (
+                                        <ErrorView
+                                            message={this.state.errorMessage}
+                                        />
+                                    );
+                                }
+                                break;
                         }
                     })()}
                 </div>
