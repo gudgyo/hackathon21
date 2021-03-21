@@ -17,9 +17,17 @@ def upload_image():
     file_content = flask.request.files["image"]
     image = Image.open(file_content)
 
-    print(image.width, image.height)
+    print(image.width, image.height, image.size)
 
-    image = image.resize((int(image.width / 4), int(image.height / 4)))
+    if max(image.size) > 1000:
+        scale = 1000 / max(image.size)
+
+        new_width = image.width * scale
+        new_height = image.height * scale
+
+        print(f"resizing image form {image.size} to {(new_width, new_height)}")
+
+        image = image.resize((int(new_width), int(new_height)))
 
     image_2 = image.copy()
     text, data = recognize_text(image)

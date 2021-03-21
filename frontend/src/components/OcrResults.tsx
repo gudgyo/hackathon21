@@ -79,6 +79,11 @@ export default class OcrResults extends React.Component<Props, State> {
                         {!this.state.loading ? (
                             <div className="row">
                                 <div className="container">
+                                    <p>
+                                        Select the box containing the ICD-10
+                                        code. Make sure that only that box is
+                                        selected. You can select multiple boxes.
+                                    </p>
                                     <button
                                         className="btn btn-primary"
                                         type="button"
