@@ -34,7 +34,7 @@ def upload_image():
 @app.route("/api/enter-icd", methods=["POST"])
 def enter_icd():
     icd = flask.request.values["text"]
-    icd = icd.replace("O", "0")
+    icd = icd.strip().replace("O", "0")
     return show_results(icd)
 
 
