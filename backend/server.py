@@ -19,7 +19,7 @@ def upload_image():
 
     print(image.width, image.height)
 
-    image = image.resize((int(image.height / 4), int(image.width / 4)))
+    image = image.resize((int(image.width / 4), int(image.height / 4)))
 
     image_2 = image.copy()
     text, data = recognize_text(image)
